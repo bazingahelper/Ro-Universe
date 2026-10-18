@@ -1,0 +1,459 @@
+extends base.pug
+
+block head_extension 
+    link( rel="stylesheet" href="/static/stylesheets/games.css")
+    meta(name="place_id" data-place-id=`${placeId}`)
+    meta(name="universe_id" data-universe-id=`${universeId}`)
+    script(src="/static/scripts/games/carousel.js" defer)
+    script(src="/static/scripts/hint_on_hover.js" defer)
+    script(src="/static/scripts/click_switch.js" defer)
+    script(src="/static/scripts/games/bottom_tab.js" defer type="module")
+    //- script(src="/static/scripts/prettier.js" defer type="module")
+
+block head_title 
+        title #{name} - RoUniverse Game Viewer
+
+block main_content 
+    article( class="base_main")
+            section( class="block_header")
+                section( class="block_icon")
+                    img( src=`${icon.imageUrl}` alt="Game icon")
+                article
+                    h2
+                        span= name
+                        a(class="base_external_link" target="_blank" href=`https://roblox.com/games/${placeId}`)
+                    p(class="flex_hori_center preserve_whitespace") By 
+                        if creator.creatorType == "Group"
+                            a(href=`/groups/${creator.id}`)= creator.name
+                        else 
+                            a(href=`/users/${creator.id}`)= creator.name
+
+                        if creator.verified
+                            img(src="/static/images/icons/verified.svg" class="base_profile_icon")
+
+                        - let finalIcon
+                        if icon.libraryId
+                            - finalIcon = `https://roblox.com/library/${icon.libraryId}`
+                        else
+                            - finalIcon = icon.imageUrl
+
+                    a(class="base_external_link" target="_blank" href=`${finalIcon}`) View Icon
+            section(class="game_baseinfo")
+                section(class="game_carousel" data-current-img="0")
+                    each thumbnail in thumbnails 
+                        img(src=`${thumbnail.imageUrl}` alt= thumbnail.altText data-image-id=`${thumbnail.libraryId}`)
+                    a(class="icon_link game_creator_store hint_on_hover" data-hint-on-hover="View on Creator Store" target="_blank")
+                        svg(xmlns="http://www.w3.org/2000/svg" width="50%" height="50%" fill="currentColor" 
+                            class="bi bi-file-earmark-image" viewBox="0 0 16 16")
+                            path(d="M6.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3")
+                            path(d="M14 14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zM4 1a1 1 0 0 0-1 1v10l2.224-2.224a.5.5 0 0 1 .61-.075L8 11l2.157-3.02a.5.5 0 0 1 .76-.063L13 10V4.5h-2A1.5 1.5 0 0 1 9.5 3V1z")
+                    button(class="icon_link game_alt_text hint_on_hover" data-hint-on-hover="")
+                        svg(xmlns="http://www.w3.org/2000/svg" width="80%" height="80%" fill="currentColor"
+                            class="bi bi-file-earmark-image" viewBox="0 0 26 16")
+                            text( x="0" y="8" dy="6" fill="currentColor" style="font-size: 14px") ALT
+                    button(class="game_thumbnail_btns game_prev_thumbnail")
+                        img(src="/static/images/icons/left-arrow.svg" width="25" height="25")
+                    button(class="game_thumbnail_btns game_next_thumbnail")
+                        img(src="/static/images/icons/right-arrow.svg" width="25" height="25")
+
+
+                section(class="base_mainstats")
+                    ul
+                        li
+                            svg(xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                                class="bi bi-arrow-clockwise" viewBox="0 0 16 16")
+                                path( fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z")
+                                path(d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466")
+                            section
+                                p Last Updated 
+                                    svg( xmlns="http://www.w3.org/2000/svg" width=".95em" height=".95em" fill="rgba(0, 0, 0, 0.5)" class="hint_on_hover" data-hint-on-hover="This stat accurately reflects info for subplaces." viewBox="0 0 16 16")
+                                        path( d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2")
+                                        
+                                h2
+                                    - let finalDate = functions.formatDate(updated)
+                                    if typeof finalDate == "string"
+                                        h2(class="hint_on_hover" data-hint-on-hover=`${finalDate}` id="game_favourites") ${finalDate}
+                                    else
+                                        h2 
+                                            button(class="base_switch_onclick hint_on_hover" id="game_updated" data-hint-on-hover=`${finalDate[2]}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalDate[0]}` data-toggle-text-2=`${finalDate[1]}` data-toggle-text-3=`${finalDate[2]}` data-linked-switch-grp="dates")
+                        li
+                            svg(xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                                class="bi bi-star-fill" viewBox="0 0 16 16")
+                                path(d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z")
+                            section
+                                p Favourites
+                                - let finalInt = functions.integerPrettier(favourites)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_updated" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_favourites")= finalInt
+                        li
+                            svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                                class="bi bi-door-open-fill" viewBox="0 0 16 16")
+                                path(d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1")
+                            section
+                                p Visits
+                                - finalInt = functions.integerPrettier(visits)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_favourites" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_favourites")= finalInt
+                        li
+                            svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                                class="bi bi-people-fill" viewBox="0 0 16 16")
+                                path(d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5")
+                            section
+                                p Playing Now
+                                - finalInt = functions.integerPrettier(playing)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_playing" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_playing")= finalInt
+            section( class="game_description")
+
+                h2 Description
+                p( class="preserve_carriage_returns") !{description}
+                if uncopylocked 
+                    hr(class="game_uncopylocked")
+                    a( class="base_external_link game_uncopylocked" href=`roblox-studio:1+launchmode:edit+distributorType:Global+task:EditPlace+placeId:${placeId}+universeId:${universeId}`)
+                        | This game is uncopylocked and can be edited on Roblox Studio.
+
+            h2 Stats
+            section( class="game_stats")
+                ul
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-tools" viewBox="0 0 16 16")
+                            path( d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3q0-.405-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708M3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z")
+                        section
+                            p Created 
+                                svg( xmlns="http://www.w3.org/2000/svg" width=".95em" height=".95em" fill="rgba(0, 0, 0, 0.5)" class="hint_on_hover" data-hint-on-hover="This stat accurately reflects info for subplaces." viewBox="0 0 16 16")
+                                        path( d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2")
+                            h2 
+                                - finalDate = functions.formatDate(created)
+                                if typeof finalDate == "string"
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalDate}` id="game_created") ${finalDate}
+                                else
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_created" data-hint-on-hover=`${finalDate[2]}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalDate[0]}` data-toggle-text-2=`${finalDate[1]}` data-toggle-text-3=`${finalDate[2]}` data-linked-switch-grp="dates")
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-hdd-rack-fill" viewBox="0 0 16 16")
+                            path(d="M2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1v2H2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2h-1V7h1a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm.5 3a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m-2 7a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m2 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1M12 7v2H4V7z")
+                        section
+                            p Server Size 
+                                svg( xmlns="http://www.w3.org/2000/svg" width=".95em" height=".95em" fill="rgba(0, 0, 0, 0.5)" class="hint_on_hover" data-hint-on-hover="This stat accurately reflects info for subplaces." viewBox="0 0 16 16")
+                                        path( d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2")
+                            - finalInt = functions.integerPrettier(maxPlayers)
+                            h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_maxplayers")= finalInt
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16")
+                            path(d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z")
+                        section
+                            p Likes
+                            - finalInt = functions.integerPrettier(upVotes)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_like" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_like")= finalInt
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-hand-thumbs-down-fill" viewBox="0 0 16 16")
+
+                            path(d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.38 1.38 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51q.205.03.443.051c.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.9 1.9 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2 2 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.2 3.2 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.8 4.8 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591")
+                        section
+                            p Dislikes
+                            - finalInt = functions.integerPrettier(downVotes)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_dislike" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_dislike")= finalInt
+                    li
+                        img( src="/static/images/icons/ratings.svg")
+                        section
+                            p Ratings
+                            if (parseInt(upVotes) === parseInt(upVotes) && parseInt(downVotes) === parseInt(downVotes))
+                                if upVotes == downVotes && upVotes == 0
+                                    - finalInt = "None"
+                                else 
+                                    - finalInt = (((upVotes / (upVotes + downVotes)) || 0) * 100).toFixed(2) + "%"
+                                
+                            else 
+                                - finalInt = "Unknown"
+                            h2( class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_ratings")= finalInt
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-person-standing" viewBox="0 0 16 16")
+                            path(d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M6 6.75v8.5a.75.75 0 0 0 1.5 0V10.5a.5.5 0 0 1 1 0v4.75a.75.75 0 0 0 1.5 0v-8.5a.25.25 0 1 1 .5 0v2.5a.75.75 0 0 0 1.5 0V6.5a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v2.75a.75.75 0 0 0 1.5 0v-2.5a.25.25 0 0 1 .5 0")
+                        section
+                            p Avatar Type 
+                            h2( id="game_avatarType")= avatarType
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-folder" viewBox="0 0 16 16")
+                            path(d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z")
+                        section
+                            p Genre
+                                if (subgenre && subgenre.length > 0) 
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_genre" data-hint-on-hover=`${subgenre}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${genre}` data-toggle-text-2=`${subgenre}`)
+                                else 
+                                    h2( class="hint_on_hover" data-hint-on-hover=`${genre || "Unknown"}` id="game_genre")= (genre || "Unknown") 
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-globe-central-south-asia" viewBox="0 0 16 16")
+                            path(d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M4.882 1.731a.48.48 0 0 0 .14.291.487.487 0 0 1-.126.78l-.291.146a.7.7 0 0 0-.188.135l-.48.48a1 1 0 0 1-1.023.242l-.02-.007a1 1 0 0 0-.462-.04 7 7 0 0 1 2.45-2.027m-3 9.674.86-.216a1 1 0 0 0 .758-.97v-.184a1 1 0 0 1 .445-.832l.04-.026a1 1 0 0 0 .152-1.54L3.121 6.621a.414.414 0 0 1 .542-.624l1.09.818a.5.5 0 0 0 .523.047.5.5 0 0 1 .724.447v.455a.8.8 0 0 0 .131.433l.795 1.192a1 1 0 0 1 .116.238l.73 2.19a1 1 0 0 0 .949.683h.058a1 1 0 0 0 .949-.684l.73-2.189a1 1 0 0 1 .116-.238l.791-1.187A.45.45 0 0 1 11.743 8c.16 0 .306.084.392.218.557.875 1.63 2.282 2.365 2.282l.04-.001a7.003 7.003 0 0 1-12.658.905Z")
+                        section
+                            p Universe ID
+                            h2( class="hint_on_hover" data-hint-on-hover=`${universeId}` id="game_universeId")= universeId
+                    li
+                        svg( xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor"
+                            class="bi bi-floppy2-fill" viewBox="0 0 16 16")
+                            path( d="M12 2h-2v3h2z")
+                            path( d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1")
+                        section
+                            p Last Saved Version 
+                                svg( xmlns="http://www.w3.org/2000/svg" width=".95em" height=".95em" fill="rgba(0, 0, 0, 0.5)" class="hint_on_hover" data-hint-on-hover="This stat accurately reflects info for subplaces." viewBox="0 0 16 16")
+                                        path( d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2")
+                            - finalInt = functions.integerPrettier(currentSavedVersion)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_lastSavedVersion" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_lastSavedVersion")= finalInt
+                    li
+                        img( src="/static/images/icons/robux.svg" width="32px" height="32")
+                        section
+                            p Fee to Access
+                            - finalInt = functions.integerPrettier(accessFee)
+                                if typeof finalInt == "object"
+                                    h2 
+                                        button(class="base_switch_onclick hint_on_hover" id="game_fee" data-hint-on-hover=`${finalInt.prettyInt}` 
+                                            data-current-sequence="1" data-toggle-text-1=`${finalInt.shortenedInt}` data-toggle-text-2=`${finalInt.prettyInt}` data-linked-switch-grp="number")
+                                else 
+                                    h2(class="hint_on_hover" data-hint-on-hover=`${finalInt}` id="game_fee")= finalInt
+            section( class="toggleable_tab")
+                fieldset( class="toggleable_tab_headers")
+                    
+                    input( value="game_group_grid" type="radio" name="toggleable_tab" id="game_tab_places" checked)
+                    label( for="game_tab_places") Places
+                    input( value="game_badges" type="radio" name="toggleable_tab" id="game_tab_badges")
+                    label( for="game_tab_badges") Badges
+                    input( value="game_store" type="radio" name="toggleable_tab" id="game_tab_store")
+                    label( for="game_tab_store") Store
+                    input( value="game_servers_disabled" type="radio" name="toggleable_tab"
+                        id="game_tab_servers")
+                    label( for="game_tab_servers") Servers
+            section( class="toggleable_tab_content")
+
+                // SERVERS ========================================================================================================================
+                article( class="game_servers_disabled")
+                    button( class="game_servers_enable")
+                        | Loading servers is disabled by default. Click to load.
+
+
+                article( class="game_servers")
+                    div( class="flex_hori_center game_server_filter_container")
+                        label( for="game_server_filter") Sort by
+                        select( class="game_server_filter" name="game_server_filter" id="game_server_filter")
+                            option( value="most") Most Players
+                            option( value="least") Least Players
+                        input( type="checkbox" name="game_server_excludefull" id="game_server_excludefull")
+                        label( for="game_server_excludefull") Exclude Full Servers
+                    ol( class="mostPlrs")
+                        li( data-server-id="" data-playing-now="" data-max-players="" class="template")
+                            section( class="game_server_stat")
+                                p( class="server_players") 15 of 41 players
+                                p( class="server_ping") Ping:
+                                a Join
+
+                    ol( class="leastPlrs")
+                        li(  data-server-id="" data-playing-now="" data-max-players="" class="template")
+                            section( class="game_server_stat")
+                                p( class="server_players") 15 of 41 players 
+                                p( class="server_ping") Ping:
+                                a Join
+
+                    button( class="game_server_loadmore")
+                        |Load more
+
+                // BADGES ==============================================================================================================================================================
+                article( class="game_badges")
+                    ul
+                        li( data-server-id="" class="template")
+                            div( class="badge_yesterday_percentage")
+                            a( target="_blank")
+                                img( src="/static/images/backgrounds/RollerCoaster.jpg")
+                                section( class="badge_basic_info")
+                                    h2( class="no_wrap") Badge Name
+                                    p( class="no_wrap") Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere voluptatum vel
+                                        |excepturi illo nemo distinctio vitae itaque, unde nostrum. Modi quis asperiores
+                                        |ex saepe dolor doloremque aspernatur odio! Autem, neque. Lorem ipsum dolor sit
+                                        |amet, consectetur adipisicing elit. Consequuntur velit deleniti nesciunt,
+                                        |temporibus quidem iure quo facere repellendus veniam delectus neque incidunt,
+                                        |suscipit iste! Perspiciatis odit omnis commodi tempora similique?
+                                section( class="badge_yesterday")
+                                    p Awarded Yesterday
+                                    p 12.34% (12,345,678)
+
+                                section( class="badge_all_time")
+                                    p Awarded All-Time
+                                    p Badge description
+                    
+
+                // STORE ==============================================================================================================================================================
+                article( class="game_store")
+                    select
+                        option Gamepasses 
+                        option Developer Products
+
+                    ul( class="game_store_pass")
+                        li( class="template")
+                            img( src="/static/images/backgrounds/RollerCoaster.jpg")
+                            div
+                                p( class="no_wrap") gamepass name that is so impossibly long
+                                p
+                                    img( src="/static/images/icons/robux.svg") 
+                                    span 302,392,482,292
+                                button( class="alert_trigger" data-gamepass-order-id="")
+                                    |Inspect
+
+
+                    ul( class="game_store_devproduct")
+                        li( class="template")
+                            img( src="/static/images/backgrounds/RollerCoaster.jpg")
+                            div
+                                p( class="no_wrap") gamepass name that is so impossibly long
+                                p 
+                                    img(src="/static/images/icons/robux.svg")
+                                    span 302,392,482,292
+                                button( class="alert_trigger" data-devproduct-order-id="")
+                                    |Inspect
+
+                    // button( id="showDialog" onclick="") test
+
+        
+                dialog( id="store_dialog")
+                    header
+                        h3( class="dialog_title") Heading
+                        button( commandfor="store_dialog" command="close" aria-label="Close") 
+                            svg( xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x-lg" viewBox="0 0 16 16")
+                                path(d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z")
+
+
+                    div( class="dialog_content")
+                        div( class="dialog_image dialog_half_width computer_visible")
+                            img( class="round_border" src="/static/images/backgrounds/RollerCoaster.jpg" id="dialog_product_image")
+                        div( class="dialog_half_width")
+                            section( class="dialog_title")
+                                h2
+                                    span Title
+                                    a(class="base_external_link" href="#" target="_blank"
+                                        id="dialog_product_link")
+                                p From <b>#{name}</b>
+                                i Link may not work if not logged in to an account that can view the game
+                                hr
+
+                            div( class="dialog_image dialog_half_width mobile_visible")
+                                img( class="round_border" src="/static/images/backgrounds/RollerCoaster.jpg")
+                            section( class="dialog_stats")
+                                table
+                                    tbody
+                                        tr( id="dialog_price_row")
+                                            th Price
+                                            td( class="flex_hori_center preserve_whitespace")
+                                                img( src="/static/images/icons/robux.svg")
+                                                span Hello
+                                    
+                                        tr( id="dialog_type_row")
+                                            th Type
+                                            td Hello
+                                        tr( id="dialog_iconlink")
+                                            th Icon
+                                            td 
+                                                a( class="base_external_link" href="#" target="_blank") View Icon on Creator Store
+                                        tr( id="dialog_productID_row")
+                                            th Product ID
+                                            td 123124311
+
+                                        tr( id="dialog_gamepassID_row")
+                                            th Gamepass ID
+                                            td 123124311
+
+                                        tr( id="dialog_devProductID_row")
+                                            th Developer Product ID 
+                                            td 123124311
+
+                                        tr( id="dialog_created_row")
+                                            th Created
+                                            td
+                                                button( class="base_switch_onclick hint_on_hover" data-hint-on-hover="" data-current-sequence="1"
+                                                    data-toggle-text-1="" data-toggle-text-2="" data-toggle-text-3=""
+                                                    data-linked-switch-grp="dates") 5 months ago
+                                        
+                                        tr( id="dialog_updated_row")
+                                            th Updated
+                                            td 
+                                                button( class="base_switch_onclick hint_on_hover" data-hint-on-hover="" data-current-sequence="1"
+                                                    data-toggle-text-1="" data-toggle-text-2="" data-toggle-text-3=""
+                                                    data-linked-switch-grp="dates") 5 months ago
+                                       
+                                        tr( id="dialog_description_row")
+                                            th Description
+                                            td( class="preserve_carriage_returns") 
+                                                |Hello Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                |Architecto repellendus, doloremque fugiat tenetur, ducimus ab incidunt
+                                                |sit nulla alias ipsum est temporibus illum? Enim eius quisquam
+                                                |doloremque obcaecati, sed libero! Lorem ipsum dolor sit, amet
+                                                |consectetur adipisicing elit. Deserunt, consequuntur a beatae est fugit
+                                                |cumque numquam facilis quas ratione nobis quis dolor excepturi, dolore
+                                                |quo et ducimus, accusamus voluptatum autem. Lorem ipsum dolor sit, amet
+                                                |consectetur adipisicing elit. Maiores, ex facere porro voluptas, cum
+                                                |maxime velit veritatis facilis ipsum culpa nostrum fugiat, architecto
+                                                |nihil omnis quaerat quod placeat asperiores exercitationem. Lorem ipsum
+                                                |dolor sit amet consectetur adipisicing elit. Perspiciatis esse veniam,
+                                                |quisquam soluta ipsum ipsam tempora corrupti, dicta fugiat velit
+                                                |consequatur harum corporis sequi excepturi veritatis! Error, quo?
+                                                |Nostrum, dignissimos? Lorem ipsum dolor sit, amet consectetur
+                                                |adipisicing elit. Magnam sunt deserunt explicabo porro cum sed,
+                                                |accusamus repellendus numquam. Vel nihil vitae repudiandae sint ratione
+                                                |obcaecati atque dicta ea quibusdam dolor?/td>
+
+                // PLACES ==============================================================================================================================================================
+
+                article( class="game_group_grid")
+
+                    ul( class="game_place_list")
+                        li( class="template")
+                            a( href="#")
+                                div
+                                    img( src="/static/images/backgrounds/RollerCoaster.jpg")
+                                div
+                                    p( class="grid_item_title no_wrap") gamepass name that is so impossibly long
+                                    p( class="grid_subtext") Start Place
+                                    p( class="game_place_version grid_subtext")
+
+
+                article( class="base_error")
+                    p Could not load.
+
+                article( class="base_loading")
+                    img( src="/static/images/gif/loading.gif" alt="Loading")
+
+

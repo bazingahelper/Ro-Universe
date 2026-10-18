@@ -1,0 +1,157 @@
+@charset "utf-8";
+
+/* ROOT */
+/* ================================================================================== */
+
+
+/* BACKGROUND */
+/* ================================================================================== */
+
+main {
+    background: no-repeat url(../images/backgrounds/RollerCoaster.jpg);
+    background-size: cover;
+    background-position: 50% 75%;
+    /* background-attachment: fixed; */
+
+    display: flex;
+    justify-content: center;
+
+    padding: 3rem 1rem;
+}
+
+/* HOME CARD INTRO */
+/* ================================================================================== */
+
+.home_card {
+    padding: 1rem;
+    
+    background-color: #282828;
+    background-color: aliceblue;
+    width: min(40rem, 100%);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.home_card .main_logo {
+    align-self: center;
+}
+
+.home_card h1, h2 {
+    margin: .15rem 0 0 0;
+}
+
+.home_card hr {
+    border-color: #f7f7f8;
+}
+
+/* FOLDER ANIMATIONS */
+/* ================================================================================== */
+
+@keyframes tab_expand {
+    from {
+        scale: 1
+    }
+
+    to {
+        scale: 1.1;
+    }
+}
+
+
+
+/* FOLDER CSS */
+/* ================================================================================== */
+
+.bullet_list {
+    list-style-type: disc;
+    padding-left: 1rem;
+}
+
+.home_folder {
+    margin: .5rem auto;
+    border: none;
+    width: min(100%, 25rem);
+    
+    padding: 0;
+
+    position: relative;
+}
+
+.home_folder input {
+    position: absolute;
+    appearance: none;
+    margin: 0;
+}
+
+.home_folder .home_tags {
+    margin: 0;
+    height: 2.75rem;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    overflow-y: hidden;
+
+    position: relative;
+}
+
+
+.home_folder label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    transform: translateY(.5rem);
+    background-color: var(--bg-color);
+    clip-path: polygon(5% 100%, 20% 0%, 80% 0%, 95% 100%);
+    
+    width: 33.3%;
+
+    transition: all 150ms;
+    /* vertical-align: bottom; */
+    transform-origin: bottom;
+    
+    cursor: pointer;
+    font-weight: bold;
+    
+}
+
+.home_folder .home_tags input[type="radio"]:checked + label {
+    transform: translateY(0rem);
+}
+
+.home_folder .home_folder_content {
+    background-color: var(--bg-color);
+    position: absolute;
+    left: 0%;
+    top: calc(2.5rem);
+    width: 100%;
+    /* z-index: 1; */
+
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: .5rem;
+    display: none;
+}
+
+.home_folder .home_folder_window {
+    /* background-color: #4be46c; */
+    height: fit-content;
+    padding: .5rem .5rem;
+    border-radius: .25rem;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0rem .5rem .25rem rgba(0, 0, 0, 0.459));
+    /* transition: background-color 150ms; */
+    overflow-y: hidden;
+}
+
+.home_folder .home_folder_window :first-child {
+    margin-top: 0;
+}
+
+.home_folder .home_folder_window :last-child {
+    margin-bottom: 0;
+}

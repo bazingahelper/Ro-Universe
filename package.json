@@ -1,0 +1,18 @@
+{
+  "name": "robloxgamepreviewer",
+  "version": "1.0.0",
+  "main": "./src/server/index.js",
+  "scripts": {
+    "start": "node ./src/server/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "path": "^0.12.7",
+    "pug": "^3.0.4"
+  },
+  "type": "commonjs"
+}

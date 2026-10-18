@@ -1,0 +1,240 @@
+/* ROOT */
+/* ================================================================================== */
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: black underline solid;
+}
+
+hr {
+    width: 100%;
+}
+
+/* HEADER */
+/* ================================================================================== */
+
+.block_header:not(.block_description) { 
+    height: 10rem
+}
+
+.block_header h2 {
+    margin: 0.25rem 0;
+}
+
+.profile_links {
+    margin-top: .25rem;
+}
+
+.profile_links > a:not(:first-of-type) {
+    margin-left: .5rem;
+}
+
+/* DESCRIPTION */
+/* ================================================================================== */
+
+.block_description {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.block_description > p:not(:first-of-type) {
+    color: black;
+    margin-top: .5rem;
+}
+
+
+.block_header .block_icon {
+    height: 90%;
+}
+
+/* SHARED GRID (both games & groups use the same grids) */
+/* ================================================================================== */
+
+.toggleable_tab_content > article > ul {
+    padding: 0;
+}
+
+.game_group_grid ul li {
+    position: relative;
+}
+
+.game_group_grid ul .top_right_label {
+    position: absolute;
+    z-index: 1;
+    top: .5rem;
+    right: .5rem;
+    background-color: white;
+    padding: .5rem;
+    border-radius: 1rem;
+}
+
+.game_group_grid ul ul {
+    list-style-type: none;
+    padding: 0;
+    height: 1.25rem;
+    display: flex;
+
+}
+
+.game_group_grid .place_update_date {
+    border: 0;
+    display: inline;
+    width: fit-content;
+}
+
+.game_group_grid .place_update_date:hover, .game_group_grid .place_update_date:active {
+    border: 0;
+    color: inherit;
+}
+
+.game_group_grid ul ul li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0 .15rem;
+}
+
+.game_group_grid ul ul li svg, .game_group_grid ul ul li img {
+    height: 80%;
+    aspect-ratio: 1;
+}
+
+.game_group_grid ul ul li span {
+    height: 100%;
+    margin-left: .25rem;
+}
+
+button.button_loadmore {
+    width: 100%;
+    padding: .3rem;
+}
+
+/* MEMBER LIST */
+/* ================================================================================== */
+
+
+
+ul.group_members_list {
+    list-style-type: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 12rem);
+    text-align: center;
+    column-gap: .15rem;
+    row-gap: .15rem;
+    grid-template-rows: 9rem;
+    justify-content: center;
+}
+
+ul.group_members_list > li {
+    /* width: min(100%, 30rem); */
+    width: 100%;
+    height: 100%;
+}
+
+ul.group_members_list > li > a {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: .25rem;
+    border-radius: .5rem;
+    transition: background-color 150ms;
+}
+
+ul.group_members_list li a > h3 {
+    font-size: 0.9rem;
+    max-width: 100%;
+}
+
+ul.group_members_list li a > p {
+    font-size: 0.8rem;
+}
+
+
+ul.group_members_list > li > a:hover, ul.group_members_list > li > a:active {
+    background-color: #f4f4f8;
+}
+
+ul.group_members_list > li > a > * {
+    margin: .25rem 0 0 0;
+}
+
+
+ul.group_members_list > li > a > img {
+    width: 6rem;
+    height: auto;
+    aspect-ratio: 1;
+}
+
+dialog#group_rank_dialog {
+    width: min(20rem, 90%);
+    max-height: min(40rem, 90%);
+}
+
+button.member_switch_rank_view {
+    padding: .5rem;
+    font-size: 1.15rem;
+}
+
+dialog#group_rank_dialog ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+dialog#group_rank_dialog ul header {
+    display: flex;
+    justify-content: center;
+}
+
+
+dialog#group_rank_dialog ul header .rank_name {
+    flex: 1 0;
+}
+
+dialog#group_rank_dialog ul header .rank_count {
+    /* flex: 1 0; */
+    text-align: right;
+    
+}
+
+dialog#group_rank_dialog .rank_list_btn {
+    padding: .5rem 0.05rem .5rem .5rem;
+    display: flex;
+    border: 0;
+}
+
+dialog#group_rank_dialog .rank_list_btn .rank_name {
+    flex: 1 0;
+    text-align: left;
+}
+
+dialog#group_rank_dialog hr {
+    margin: .1rem auto;
+
+}
+
+dialog#group_rank_dialog .rank_list_btn .rank_count {
+    width: 4rem;
+    
+}
+
+dialog#group_rank_dialog .rank_list_btn:hover, dialog#group_rank_dialog .rank_list_btn:active {
+    background-color: #f4f4f8;
+}
+
+/* MISC */
+/* ================================================================================== */
+
+.playing_icon {
+    mask-image: url(../images/icons/player_filled.svg);
+    background-size: cover;
+    mask-size: 100%;
+    background-repeat: no-repeat;
+    background-color: #717171;
+}
+

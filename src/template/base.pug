@@ -1,0 +1,46 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        block head_title 
+            title RoUniverse - Search for Places
+        link(rel="stylesheet",  href="/static/stylesheets/base.css")
+        script(src="/static/scripts/base_search.js", defer)
+        block head_extension
+    body(class="builderText")
+        header 
+            ul 
+                li(class="header_logo") 
+                    a(href="/")
+                        svg(xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 112 16" fill="none" class="unselectable main_logo")
+                            text(class="mercText" x="0" y="45%" fill="#e44646"
+                                style="font-size: 16px; dominant-baseline: central") RO
+                            text(class="mercText" x="25" y="45%" fill="#3869c2"
+                                style="font-size: 16px; dominant-baseline: central") UNIVERSE
+                li(class="computer_visible")
+                    search(class="header_search")
+                        button(class="header_searchbtn" aria-roledescription="Search for game ID")
+                        input(placeholder="Enter ID here" class="builderText")
+                        button(class="header_clearbtn" aria-roledescription="Clear searchbar")
+            search(class="header_search mobile_visible")
+                button(class="header_searchbtn" aria-roledescription="Search for game ID")
+                input(placeholder="Enter ID here" class="builderText")
+                button(class="header_clearbtn" aria-roledescription="Clear searchbar")
+        main 
+            div(class="search_overlay")
+                ul
+                    li(class="search_players") <a href="#"><b>Placeholder</b> in Players</a>
+                    li(class="search_games") <a href="#"><b>Placeholder</b> in Games</a>
+                    li(class="search_group") <a href="#"><b>Placeholder</b> in Groups</a>
+            block main_content
+        footer 
+            div(class="footer_bg_container")
+            ul(class="footer_list")
+                li 
+                | Made by <a>insert-username-here</a> ❤️<br>
+                | 🐞Bugs
+
+            
+                            
+

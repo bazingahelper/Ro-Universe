@@ -1,0 +1,74 @@
+extends base.pug
+
+block head_extension
+    link(rel="stylesheet" href="/static/stylesheets/home.css")
+    script(src="../static/scripts/home/home_page.js" defer)
+
+block main_content 
+    section(class="home_card")
+        svg(xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 112 16" fill="none"
+            class="unselectable main_logo")
+            
+            text(class="mercText" x="0" y="45%" fill="#e44646"
+                style="font-size: 16px; dominant-baseline: central") RO
+            text(class="mercText" x="25" y="45%" fill="#3869c2"
+                style="font-size: 16px; dominant-baseline: central") UNIVERSE
+
+
+            h1( class="text-align") Visualise Unlisted Places on Roblox
+            h2( class="text-align") Grab and search IDs through the searchbar above
+            hr
+            p Note: This tool is for informational purposes only and uses publicly available Roblox API endpoints to function. 
+                |The creator and this tool is not affiliated or endorsed by Roblox, and will not be liable if usage of this tool 
+                |directly or indirectly results in moderation action taken on your Roblox account.    
+            h2 Features
+            section(class="home_folder")    
+                fieldset(class="home_tags")
+                    input(type="radio" id="folder_choice_1" name="home_folder" autocomplete="off" checked)
+                    label(for="folder_choice_1" style="--bg-color: #6ee888; --order: 1") User
+                    article(class="home_folder_content" data-linked-input-id="folder_choice_1")
+                        |This tool works for terminated/banned accounts (banned accounts from early Roblox might not work). You can search for a user's profile by inputting their user ID in the searchbar above, and the tool displays the following information:
+                        br
+                        ul( class="bullet_list")
+                            li Account description &amp; creation date
+                            li Account creations, checked through:
+                                ul
+                                    li Account's public games 
+                                    li Games in inventory (if inventory is public)
+                                    li Favourited games (if account had favourited its own games)
+                            li Account groups
+                    
+                    input( type="radio" id="folder_choice_2" name="home_folder" autocomplete="off")
+                    label( for="folder_choice_2" style="--bg-color: #6ecae8; --order: 2") Group
+                    article( class="home_folder_content" data-linked-input-id="folder_choice_2")
+                        |This tool works for most groups (including locked groups), and displays the following information when inputting the group ID into the searchbar above:
+                        br
+                        ul( class="bullet_list")
+                            li Group description, creation date &amp; member count
+                            li Group games
+                            li Affialiates (Enemies &amp; Allies)
+                    
+                    input( type="radio" id="folder_choice_3" name="home_folder" autocomplete="off")
+                    label( for="folder_choice_3" style="--bg-color: #e86eca; --order: 3") Game
+                    article( class="home_folder_content" data-linked-input-id="folder_choice_3")
+                        |This tool works for most games (including content deleted games, along with subplaces), and displays the following information when inputting the place ID of a game into the searchbar above:
+                        br
+                        ul( class="bullet_list")
+                            li Game title, description, icon &amp; thumbnails
+                            li Favourite count, visits, like count, dislike count, ratings
+                            li Avatar Type, Universe ID, Access Fee (in Robux)
+                            li (Updates according to subplaces too) Last updated date, creation date, server size, last saved version
+                            li Subplaces 
+                            li Badges 
+                            li Gamepasses &amp; Developer Products
+                            li Servers
+                article( class="home_folder_window")
+                    h2 Hello
+            p This tool was built to function without cookies/being logged in on the Roblox site. Because of this, you should expect strict  
+                |ratelimits when communicating with Roblox's API. Since Roblox is <i>really</i> strict on loading servers, it is disabled from loading by default and requires manual activation 
+                |to load for each game.
+            h2 Credits 
+            ul 
+                li RoSeal Extension, for most design ideas
+            
+        </section>

@@ -1,0 +1,82 @@
+extends base.pug
+
+block head_extension 
+    link( href="/static/stylesheets/groupnusers.css" rel="stylesheet")
+    script(src="/static/scripts/hint_on_hover.js" defer)
+    script(src="/static/scripts/click_switch.js" defer)
+    script(src="/static/scripts/user/toggleTab.js" type="module" defer)
+    meta( name="user_id" data-user-id=`${id}`)
+block head_title 
+        title #{displayName} - RoUniverse User Viewer
+
+block main_content 
+    article( class="base_main")
+        article( class="block_header")
+            section( class="block_icon")
+                img( class="round_border" src=`${iconUrl}`)
+            article 
+                h2(class="flex_hori_center")= displayName
+                    if hasVerifiedBadge 
+                        img(src="/static/images/icons/verified.svg" class="base_profile_icon")
+                    if isBanned 
+                        svg( xmlns="http://www.w3.org/2000/svg" width=".95em" height=".95em" fill="currentColor" class="base_profile_icon hint_on_hover" data-hint-on-hover="Terminated/Deactivated account" viewBox="0 0 16 16")
+                            path( fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3")
+                    a(target="_blank" class="base_external_link " href=`https://roblox.com/users/${id}/profile`)
+                p @#{name} 
+                section( class="profile_links") 
+                    a(href=`https://www.roblox.com/users/${id}/friends#!/friends` class="base_external_link" target="_blank") See Friends
+                    a(href=`https://www.roblox.com/users/${id}/friends#!/followers` class="base_external_link" target="_blank") See Followers
+                    a(href=`https://www.roblox.com/users/${id}/friends#!/following` class="base_external_link" target="_blank") See Following
+        section( class="block_header block_description")
+            h2 Description
+            p( class="preserve_carriage_returns") !{description}
+            hr
+            p <b>Account created </b>
+                - let finalDate = functions.formatDate(created)
+                button( class="base_switch_onclick hint_on_hover" id="account_created" 
+                data-hint-on-hover=`${finalDate[2]}` data-current-sequence="1" data-toggle-text-1=`${finalDate[0]}` data-toggle-text-2=`${finalDate[1]}` data-toggle-text-3=`${finalDate[2]}` 
+                data-linked-switch-grp="dates")
+        section( class="toggleable_tab")
+                fieldset( class="toggleable_tab_headers")
+                    input( value="users_places" type="radio" name="toggleable_tab" id="users_places" checked)
+                    label( for="users_places") Creations
+                    input( value="users_groups" type="radio" name="toggleable_tab" id="users_groups")
+                    label( for="users_groups") Groups
+        section( class="toggleable_tab_content")
+            article(class="game_group_grid users_places")
+                ul( class="game_place_list")
+                    li( class="template")
+                        a( href="#")
+                            div
+                                img( src="/static/images/backgrounds/RollerCoaster.jpg")
+                            div
+                                p( class="grid_item_title no_wrap") gamepass name that is so impossibly long
+                            ul(class="grid_subtext")
+                                li( class="game_like_dislike_ratio") 
+                                    svg( xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.5)"
+                                        class="grid_subtext" viewBox="0 0 16 16")
+                                        path(d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a10 10 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733q.086.18.138.363c.077.27.113.567.113.856s-.036.586-.113.856c-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.2 3.2 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.8 4.8 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z")
+                                    span 0%
+                                li( class="game_playing_now")
+                                    img(class="playing_icon")
+                                    span 0
+
+            article(class="game_group_grid users_groups")
+                ul( class="game_group_list")
+                    li( class="template")
+                        a( href="#")
+                            span( class="top_right_label") Primary
+                            div 
+                                img( src="/static/images/backgrounds/RollerCoaster.jpg")
+                            div
+                                span( class="flex_hori_center")
+                                    p( class="grid_item_title no_wrap flex_shrink") gamepass name that is so impossibly long
+                                    img(src="/static/images/icons/verified.svg" class="base_profile_icon")
+                                p( class="grid_subtext group_rank no_wrap no_margin") rank name that is also reaaaaaly long
+                                p( class="grid_subtext group_members no_wrap no_margin") rank name that is also reaaaaaly long
+                        
+            article( class="base_error")
+                    p Could not load.
+
+            article( class="base_loading")
+                img( src="/static/images/gif/loading.gif" alt="Loading")
