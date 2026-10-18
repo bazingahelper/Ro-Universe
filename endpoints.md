@@ -1,6 +1,6 @@
 This file contains a list of Roblox API endpoints used to make this tool possible. They require no cookies to work (though you should expect stricter ratelimits if you don't provide a cookie).
 
-Table of Contents
+# Table of Contents
 1. [Resources](#resources)
 2. [URI (Uniform Resource Identifier)](uri-uniform-resource-identifier)
     1. [roblox://](#roblox)
@@ -56,7 +56,7 @@ https://apis.roblox.com/universes/v1/places/{placeId}/universe
 |https://economy.roblox.com/v2/assets/{placeId}/details|Gets information on place.
 |https://develop.roblox.com/v2/universes/{universeId}/places?extendedSettings=true&limit={limit}|Gets subplaces + last saved version of universe.|
 
-(Side note: the thumbnail API for getting universe icons (https://thumbnails.roblox.com/v1/games/icons) returns an empty string if the icon was content deleted, but getting its icon from the game's root place ID doesn't)
+* (Side note: the thumbnail API for getting universe icons (https://thumbnails.roblox.com/v1/games/icons) returns an empty string if the icon was content deleted, but getting its icon from the game's root place ID doesn't)
 
 ### Upvotes/Downvotes
 https://games.roblox.com/v1/games/votes?universeIds={universeId}
