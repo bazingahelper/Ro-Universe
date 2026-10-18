@@ -2,7 +2,7 @@
 
 # Visualise Unlisted Roblox Places
 
-Ro-Universe is an Express.js application which allows users to view Roblox places which could not be easily accessed on the Roblox website by using publicly available Roblox API endpoints. This repo holds Ro-Universe's source code for anyone to download and host locally on their device. This tool is also built to work without cookies/being logged in on the Roblox website.
+Ro-Universe is an Express.js application which allows users to view Roblox places which could not be easily accessed on the Roblox website by using publicly available Roblox API endpoints. This repo holds Ro-Universe's source code for anyone to download and host locally on their device. This tool is also built to work without cookies/being logged in on the Roblox website (so you may experience stricter ratelimits on Roblox's end).
 > [!WARNING]
 > This tool and its creator is **not** affiliated with or endorsed by Roblox, and is meant for informational purposes only. The creator is not liable for any losses caused directly/indirectly by this tool. Take a look at this [repo's license](https://github.com/ducktowebv/ro-universe/blob/main/LICENSE) for more information on using Ro-Universe.
 
